@@ -1,0 +1,357 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mxGraphModel compressed="false" dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1960" pageHeight="1200" math="0" shadow="0">
+  <root>
+    <mxCell id="0" />
+    <mxCell id="1" parent="0" />
+
+    <!-- ===== 标题 ===== -->
+    <mxCell id="title" value="数栈离线平台工作流（dtstack_batch_ai）" style="text;html=1;strokeColor=none;fillColor=#00BCD4;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontColor=#ffffff;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="0" y="0" width="1960" height="46" as="geometry" />
+    </mxCell>
+
+    <!-- ===== 图例 ===== -->
+    <mxCell id="leg1" value="开始/结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#023E8A;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="30" y="1100" width="100" height="34" as="geometry" />
+    </mxCell>
+    <mxCell id="leg2" value="LLM 节点" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="145" y="1100" width="100" height="34" as="geometry" />
+    </mxCell>
+    <mxCell id="leg3" value="工具节点" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="260" y="1100" width="100" height="34" as="geometry" />
+    </mxCell>
+    <mxCell id="leg4" value="条件判断" style="rhombus;whiteSpace=wrap;html=1;fillColor=#0077B6;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="375" y="1090" width="110" height="54" as="geometry" />
+    </mxCell>
+    <mxCell id="leg5" value="结束输出" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="500" y="1100" width="100" height="34" as="geometry" />
+    </mxCell>
+
+    <!-- ===== 主流程节点 ===== -->
+
+    <!-- 开始 -->
+    <mxCell id="n_start" value="开始&#xa;user_token / history&#xa;intent_type / code_language&#xa;tenant_id / database" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#023E8A;fontColor=#ffffff;strokeColor=none;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="20" y="560" width="160" height="80" as="geometry" />
+    </mxCell>
+
+    <!-- DTStack 用户身份验证 -->
+    <mxCell id="n_auth" value="DTStack&#xa;用户身份验证" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="220" y="575" width="160" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- 条件分支（意图路由） -->
+    <mxCell id="n_branch" value="条件分支&#xa;（意图类型路由）" style="rhombus;whiteSpace=wrap;html=1;fillColor=#0077B6;fontColor=#ffffff;strokeColor=none;fontSize=11;fontStyle=1;" vertex="1" parent="1">
+      <mxGeometry x="430" y="530" width="180" height="140" as="geometry" />
+    </mxCell>
+
+    <!-- ===== NL2SQL 路径（上方） ===== -->
+    <!-- SQL类型与数据库判断 -->
+    <mxCell id="n_sql_judge" value="SQL类型与数据库判断&#xa;（类型或数据库是否为空）" style="rhombus;whiteSpace=wrap;html=1;fillColor=#0077B6;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="660" y="64" width="190" height="110" as="geometry" />
+    </mxCell>
+
+    <!-- 是（为空）: DTStack结果格式化(nl2sql) early -->
+    <mxCell id="n_fmt_nl2sql_early" value="DTStack返回结果格式化&#xa;（nl2sql · 直接返回）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="66" width="175" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- 结束 early nl2sql -->
+    <mxCell id="n_ans_nl2sql_early" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="66" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- 否（不为空）: Milvus数据检索（表元数据） -->
+    <mxCell id="n_milvus_meta" value="Milvus数据检索&#xa;（表元数据 · 63_Meta）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="142" width="175" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- 表信息转M_Schema格式 -->
+    <mxCell id="n_mschema" value="表信息转M_Schema格式" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="142" width="175" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- NL2SQL LLM -->
+    <mxCell id="n_nl2sql_llm" value="NL2SQL&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1340" y="142" width="175" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- DTStack结果格式化 nl2sql final -->
+    <mxCell id="n_fmt_nl2sql" value="DTStack返回结果格式化&#xa;（nl2sql）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1560" y="142" width="175" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- 结束 nl2sql final -->
+    <mxCell id="n_ans_nl2sql" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1780" y="142" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== code_optimization ===== -->
+    <mxCell id="n_code_opt_llm" value="代码智能优化&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="240" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_code_opt" value="DTStack返回结果格式化&#xa;（code_optimization）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="240" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_code_opt" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="240" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== code_explain ===== -->
+    <mxCell id="n_code_exp_llm" value="代码智能解释&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="314" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_code_exp" value="DTStack返回结果格式化&#xa;（code_explain）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="314" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_code_exp" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="314" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== code_annotation ===== -->
+    <mxCell id="n_code_ann_llm" value="代码智能注释&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="388" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_code_ann" value="DTStack返回结果格式化&#xa;（code_annotation）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="388" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_code_ann" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="388" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== error_log_explain ===== -->
+    <mxCell id="n_log_llm" value="日志智能解析&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="462" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_log" value="DTStack返回结果格式化&#xa;（error_log_explain）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="462" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_log" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="462" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== code_continuation ===== -->
+    <mxCell id="n_code_cont_llm" value="代码续写&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="536" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_code_cont" value="DTStack返回结果格式化&#xa;（code_continuation）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="536" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_code_cont" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="536" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== analyze_intent（Query重写 → 意图识别） ===== -->
+    <mxCell id="n_query_rewrite" value="Query 重写&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="690" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_intent_recog" value="意图识别&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="900" y="690" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_intent" value="DTStack返回结果格式化&#xa;（analyze_intent）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="690" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_intent" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1340" y="690" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== doc_query（Milvus文档检索 → 产品文档问答） ===== -->
+    <mxCell id="n_milvus_doc" value="Milvus数据检索&#xa;（文档知识库 · dtstack_batch_doc）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="680" y="776" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_doc_qa_llm" value="产品文档问答&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="900" y="776" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_doc" value="DTStack返回结果格式化&#xa;（doc_query）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="776" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_doc" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1340" y="776" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== table_schema_upsert ===== -->
+    <mxCell id="n_schema_upsert" value="DTStack表信息更新插入&#xa;（table_schema_upsert）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="680" y="862" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_schema" value="DTStack返回结果格式化&#xa;（table_schema_upsert）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="862" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_schema" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="862" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== sql_type_identify ===== -->
+    <mxCell id="n_sql_type_id" value="SQL类型识别" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="938" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_fmt_sql_type" value="DTStack返回结果格式化&#xa;（sql_type_identify）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0096C7;fontColor=#ffffff;strokeColor=none;fontSize=10;" vertex="1" parent="1">
+      <mxGeometry x="900" y="938" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_sql_type" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="1120" y="938" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ===== 普通对话（false/else） ===== -->
+    <mxCell id="n_chat_llm" value="普通对话&#xa;（LLM · DeepSeek）" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#0277BD;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="680" y="1020" width="175" height="50" as="geometry" />
+    </mxCell>
+    <mxCell id="n_ans_chat" value="结束" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#48CAE4;fontColor=#ffffff;strokeColor=none;fontSize=11;" vertex="1" parent="1">
+      <mxGeometry x="900" y="1020" width="90" height="50" as="geometry" />
+    </mxCell>
+
+    <!-- ============================= -->
+    <!-- ===== 连线（Edges） ===== -->
+    <!-- ============================= -->
+
+    <!-- 开始 → 用户身份验证 -->
+    <mxCell id="e_start_auth" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="n_start" target="n_auth" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- 用户身份验证 → 条件分支 -->
+    <mxCell id="e_auth_branch" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=2;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" source="n_auth" target="n_branch" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── NL2SQL 路径 ── -->
+    <!-- 条件分支 → SQL类型与数据库判断 -->
+    <mxCell id="e_br_nl2sql" value="nl2sql" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_sql_judge" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- SQL判断 → early exit（是·空） -->
+    <mxCell id="e_sqljudge_early" value="是（为空）" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#e53935;strokeWidth=1.5;fontColor=#e53935;fontSize=10;" edge="1" source="n_sql_judge" target="n_fmt_nl2sql_early" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_fmt_early_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_nl2sql_early" target="n_ans_nl2sql_early" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <!-- SQL判断 → Milvus Meta（否·不为空） -->
+    <mxCell id="e_sqljudge_milvus" value="否（不为空）" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#43a047;strokeWidth=1.5;fontColor=#43a047;fontSize=10;" edge="1" source="n_sql_judge" target="n_milvus_meta" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_milvus_mschema" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_milvus_meta" target="n_mschema" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_mschema_llm" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_mschema" target="n_nl2sql_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_llm_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_nl2sql_llm" target="n_fmt_nl2sql" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_fmt_nl2sql_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_nl2sql" target="n_ans_nl2sql" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── code_optimization ── -->
+    <mxCell id="e_br_codeopt" value="code_optimization" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_code_opt_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeopt_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_code_opt_llm" target="n_fmt_code_opt" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeopt_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_code_opt" target="n_ans_code_opt" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── code_explain ── -->
+    <mxCell id="e_br_codeexp" value="code_explain" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_code_exp_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeexp_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_code_exp_llm" target="n_fmt_code_exp" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeexp_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_code_exp" target="n_ans_code_exp" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── code_annotation ── -->
+    <mxCell id="e_br_codeann" value="code_annotation" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_code_ann_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeann_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_code_ann_llm" target="n_fmt_code_ann" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codeann_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_code_ann" target="n_ans_code_ann" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── error_log_explain ── -->
+    <mxCell id="e_br_log" value="error_log_explain" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_log_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_log_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_log_llm" target="n_fmt_log" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_log_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_log" target="n_ans_log" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── code_continuation ── -->
+    <mxCell id="e_br_codecont" value="code_continuation" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_code_cont_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codecont_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_code_cont_llm" target="n_fmt_code_cont" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_codecont_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_code_cont" target="n_ans_code_cont" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── analyze_intent ── -->
+    <mxCell id="e_br_intent" value="analyze_intent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_query_rewrite" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_qrw_intent" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_query_rewrite" target="n_intent_recog" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_intent_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_intent_recog" target="n_fmt_intent" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_intent_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_intent" target="n_ans_intent" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── doc_query ── -->
+    <mxCell id="e_br_doc" value="doc_query" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_milvus_doc" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_milvusdoc_llm" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_milvus_doc" target="n_doc_qa_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_doc_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_doc_qa_llm" target="n_fmt_doc" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_doc_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_doc" target="n_ans_doc" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── table_schema_upsert ── -->
+    <mxCell id="e_br_schema" value="table_schema_upsert" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_schema_upsert" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_schema_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_schema_upsert" target="n_fmt_schema" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_schema_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_schema" target="n_ans_schema" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── sql_type_identify ── -->
+    <mxCell id="e_br_sqltype" value="sql_type_identify" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0277BD;strokeWidth=1.5;fontColor=#0277BD;fontSize=10;" edge="1" source="n_branch" target="n_sql_type_id" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_sqltype_fmt" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_sql_type_id" target="n_fmt_sql_type" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_sqltype_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_fmt_sql_type" target="n_ans_sql_type" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+    <!-- ── 普通对话（false） ── -->
+    <mxCell id="e_br_chat" value="else（默认）" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#e53935;strokeWidth=1.5;fontColor=#e53935;fontSize=10;" edge="1" source="n_branch" target="n_chat_llm" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+    <mxCell id="e_chat_ans" style="edgeStyle=orthogonalEdgeStyle;html=1;strokeColor=#0096C7;strokeWidth=1.5;" edge="1" source="n_chat_llm" target="n_ans_chat" parent="1">
+      <mxGeometry relative="1" as="geometry" />
+    </mxCell>
+
+  </root>
+</mxGraphModel>
